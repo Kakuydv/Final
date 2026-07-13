@@ -1,4 +1,4 @@
-# Mi Tienda Online
+# Tienda
 
 ## Descripción
 
