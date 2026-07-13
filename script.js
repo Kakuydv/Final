@@ -8,67 +8,35 @@ const contador = document.getElementById("contador");
 const total = document.getElementById("total");
 
 
-// Traducción de nombres de productos
-const traducciones = {
-    "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops":
-        "Mochila Fjallraven para notebook de 15 pulgadas",
+// Traducción de productos por ID
+const nombresEspañol = {
 
-    "Mens Casual Premium Slim Fit T-Shirts":
-        "Remera casual premium de hombre",
+    1: "Mochila Fjallraven para notebook de 15 pulgadas",
+    2: "Remera casual premium de hombre",
+    3: "Campera de algodón para hombre",
+    4: "Ropa casual ajustada para hombre",
+    5: "Pulsera dorada y plateada con diseño de dragón",
+    6: "Anillo de oro macizo",
+    7: "Collar de oro blanco estilo princesa",
+    8: "Aros de acero inoxidable bañados en oro rosa",
+    9: "Disco externo WD 2TB USB 3.0",
+    10: "Disco SSD interno SanDisk 1TB",
+    11: "Disco SSD Silicon Power 256GB",
+    12: "Disco externo gamer WD 4TB",
+    13: "Campera de invierno impermeable para mujer",
+    14: "Campera de cuero sintético para mujer",
+    15: "Campera impermeable deportiva para mujer",
+    16: "Remera femenina manga corta",
+    17: "Remera deportiva femenina",
+    18: "Remera casual de algodón para mujer",
+    19: "Remera premium de algodón para hombre",
+    20: "Remera deportiva manga corta"
 
-    "Mens Cotton Jacket":
-        "Campera de algodón para hombre",
-
-    "Mens Casual Slim Fit":
-        "Ropa casual ajustada para hombre",
-
-    "John Hardy Women's Legends Naga Gold & Silver Dragon Station Chain Bracelet":
-        "Pulsera dorada y plateada con diseño de dragón",
-
-    "Solid Gold Petite Micropave":
-        "Anillo de oro macizo con micropiedras",
-
-    "White Gold Plated Princess":
-        "Collar de oro blanco con diseño princesa",
-
-    "Pierced Owl Rose Gold Plated Stainless Steel Double":
-        "Aros de acero inoxidable bañados en oro rosa",
-
-    "WD 2TB Elements Portable External Hard Drive - USB 3.0":
-        "Disco externo portátil WD 2TB USB 3.0",
-
-    "SanDisk SSD PLUS 1TB Internal SSD - SATA III 6 Gb/s":
-        "Disco SSD interno SanDisk 1TB",
-
-    "Silicon Power 256GB SSD 3D NAND A55":
-        "Disco SSD Silicon Power 256GB",
-
-    "WD 4TB Gaming Drive Works with Playstation 4 Portable External Hard Drive":
-        "Disco externo gamer WD 4TB",
-
-    "BIYLACLESEN Women's 3-in-1 Snowboard Jacket Winter Coats":
-        "Campera de invierno impermeable para mujer",
-
-    "Lock and Love Women's Removable Hooded Faux Leather Moto Biker Jacket":
-        "Campera de cuero sintético para mujer",
-
-    "Rain Jacket Women Windbreaker Striped Climbing Raincoats":
-        "Campera impermeable deportiva para mujer",
-
-    "MBJ Women's Solid Short Sleeve Boat Neck V":
-        "Remera femenina manga corta",
-
-    "Opna Women's Short Sleeve Moisture":
-        "Remera deportiva femenina",
-
-    "DANVOUY Womens T Shirt Casual Cotton Short":
-        "Remera casual de algodón para mujer",
-
-    "Mens Short Sleeve Premium Cotton":
-        "Remera premium de algodón para hombre"
 };
 
 
+
+// Cargar productos desde API
 
 fetch(API)
 
@@ -76,357 +44,82 @@ fetch(API)
 
 .then(productos => {
 
+
     productos.forEach(producto => {
 
-        let nombreEspañol =
-            traducciones[producto.title] || producto.title;
+
+        let nombreProducto =
+        nombresEspañol[producto.id] || producto.title;
 
 
-        let card = document.createElement("div");
+
+        const card = document.createElement("div");
 
         card.className = "card";
 
 
+
         card.innerHTML = `
 
-        <img src="${producto.image}" 
-        alt="${nombreEspañol}">
+        <img 
+        src="${producto.image}" 
+        alt="${nombreProducto}">
 
-        <h3>${nombreEspañol}</h3>
 
-        <p>$${producto.price}</p>
+        <h3>${nombreProducto}</h3>
 
-        <button>
+
+        <p>
+        $${producto.price}
+        </p>
+
+
+        <button class="btn-agregar">
         Agregar al carrito
         </button>
 
         `;
 
 
-        card.querySelector("button")
+
+        card
+        .querySelector(".btn-agregar")
         .addEventListener("click",()=>{
 
-            agregar(
+
+            agregarProducto(
+
                 producto.id,
-                nombreEspañol,
+                nombreProducto,
                 producto.price,
                 producto.image
+
             );
+
 
         });
 
 
+
         listaProductos.appendChild(card);
 
+
     });
+
 
 
     actualizarCarrito();
 
-});
 
+})
 
+.catch(error=>{
 
-
-
-function agregar(id,titulo,precio,img){
-
-
-let producto =
-carrito.find(p=>p.id===id);
-
-
-
-if(producto){
-
-    producto.cantidad++;
-
-}
-else{
-
-    carrito.push({
-
-        id,
-        titulo,
-        precio,
-        img,
-        cantidad:1
-
-    });
-
-}
-
-
-// Notificación
-mostrarNotificacion(
-`${titulo} fue agregado al carrito 🛒`
+console.log(
+"Error cargando productos:",
+error
 );
 
-
-guardar();
-
-}
-
-
-
-
-
-
-
-function mostrarNotificacion(texto){
-
-
-let aviso=document.createElement("div");
-
-aviso.className="notificacion";
-
-aviso.textContent=texto;
-
-
-document.body.appendChild(aviso);
-
-
-
-setTimeout(()=>{
-
-    aviso.remove();
-
-},3000);
-
-
-}
-
-
-
-
-
-
-
-function guardar(){
-
-localStorage.setItem(
-"carrito",
-JSON.stringify(carrito)
-);
-
-
-actualizarCarrito();
-
-}
-
-
-
-
-
-
-
-function actualizarCarrito(){
-
-listaCarrito.innerHTML="";
-
-
-let suma=0;
-let cantidadTotal=0;
-
-
-
-carrito.forEach(producto=>{
-
-
-cantidadTotal+=producto.cantidad;
-
-suma+=producto.precio * producto.cantidad;
-
-
-
-let div=document.createElement("div");
-
-
-div.innerHTML=`
-
-<h4>${producto.titulo}</h4>
-
-<p>
-Cantidad:
-<input 
-type="number"
-min="1"
-value="${producto.cantidad}"
-onchange="cambiarCantidad(${producto.id},this.value)">
-</p>
-
-
-<p>
-Precio: $${producto.precio}
-</p>
-
-
-<button onclick="eliminar(${producto.id})">
-Eliminar
-</button>
-
-<hr>
-
-`;
-
-
-listaCarrito.appendChild(div);
-
-
-});
-
-
-contador.textContent=cantidadTotal;
-
-total.textContent=suma.toFixed(2);
-
-
-}
-
-
-
-
-
-
-
-function cambiarCantidad(id,cantidad){
-
-
-let producto =
-carrito.find(p=>p.id===id);
-
-
-producto.cantidad=Number(cantidad);
-
-
-guardar();
-
-
-}
-
-
-
-
-
-
-function eliminar(id){
-
-carrito =
-carrito.filter(p=>p.id!==id);
-
-
-guardar();
-
-}
-
-
-
-
-
-
-// Validación formulario
-
-document
-.getElementById("formulario")
-.addEventListener("submit",(e)=>{
-
-
-let email =
-document.getElementById("email").value;
-
-
-if(!email.includes("@")){
-
-e.preventDefault();
-
-alert("Correo inválido");
-
-}
-
-});const API = "https://fakestoreapi.com/products";
-
-
-let carrito =
-JSON.parse(localStorage.getItem("carrito"))
-|| [];
-
-
-
-const listaProductos =
-document.getElementById("lista-productos");
-
-
-
-const listaCarrito =
-document.getElementById("lista-carrito");
-
-
-
-const contador =
-document.getElementById("contador");
-
-
-
-const total =
-document.getElementById("total");
-
-
-
-
-
-// CONSUMO API
-
-
-fetch(API)
-
-.then(res=>res.json())
-
-.then(productos=>{
-
-
-productos.forEach(producto=>{
-
-
-let card=document.createElement("div");
-
-card.className="card";
-
-
-card.innerHTML=`
-
-<img src="${producto.image}" 
-alt="${producto.title}">
-
-
-<h3>${producto.title}</h3>
-
-
-<p>
-$${producto.price}
-</p>
-
-
-<button onclick="agregar(${producto.id},
-'${producto.title}',
-${producto.price},
-'${producto.image}')">
-
-Agregar
-
-</button>
-
-`;
-
-
-listaProductos.appendChild(card);
-
-
-});
-
-
-actualizarCarrito();
-
-
 });
 
 
@@ -435,55 +128,75 @@ actualizarCarrito();
 
 
 
-function agregar(id,titulo,precio,img){
+// Agregar producto al carrito
 
-
-let producto =
-carrito.find(p=>p.id===id);
+function agregarProducto(id,titulo,precio,img){
 
 
 
-if(producto){
-
-producto.cantidad++;
-
-}else{
+    let producto =
+    carrito.find(item=>item.id===id);
 
 
-carrito.push({
 
-id,
-titulo,
-precio,
-img,
-cantidad:1
+    if(producto){
 
-});
+
+        producto.cantidad++;
+
+
+    }else{
+
+
+        carrito.push({
+
+            id:id,
+            titulo:titulo,
+            precio:Number(precio),
+            img:img,
+            cantidad:1
+
+        });
+
+
+    }
+
+
+
+    mostrarNotificacion(
+        `${titulo} agregado al carrito 🛒`
+    );
+
+
+
+    guardarCarrito();
+
 
 
 }
 
 
-guardar();
-
-}
 
 
 
 
 
+// Guardar carrito
 
-
-function guardar(){
+function guardarCarrito(){
 
 
 localStorage.setItem(
+
 "carrito",
+
 JSON.stringify(carrito)
+
 );
 
 
 actualizarCarrito();
+
 
 }
 
@@ -492,6 +205,8 @@ actualizarCarrito();
 
 
 
+
+// Mostrar carrito
 
 function actualizarCarrito(){
 
@@ -499,37 +214,38 @@ function actualizarCarrito(){
 listaCarrito.innerHTML="";
 
 
-let suma=0;
-let cantidadTotal=0;
+let totalCompra=0;
+
+let cantidadProductos=0;
 
 
 
 carrito.forEach(producto=>{
 
 
-cantidadTotal+=producto.cantidad;
+cantidadProductos += producto.cantidad;
 
 
-suma+=producto.precio *
-producto.cantidad;
+totalCompra += 
+producto.precio * producto.cantidad;
 
 
 
-let div=document.createElement("div");
+const item = document.createElement("div");
 
 
-div.innerHTML=`
 
-<h4>${producto.titulo}</h4>
+item.innerHTML=`
 
-<p>
-Cantidad:
-<input 
-type="number"
-value="${producto.cantidad}"
-min="1"
-onchange="cambiarCantidad(${producto.id},this.value)">
-</p>
+<h4>
+${producto.titulo}
+</h4>
+
+
+<img 
+src="${producto.img}"
+alt="${producto.titulo}"
+width="80">
 
 
 <p>
@@ -538,9 +254,27 @@ $${producto.precio}
 </p>
 
 
-<button onclick="eliminar(${producto.id})">
+<label>
+Cantidad:
+<input 
+type="number"
+min="1"
+value="${producto.cantidad}"
+onchange="
+cambiarCantidad(${producto.id},this.value)
+">
+</label>
+
+
+<br><br>
+
+
+<button onclick="
+eliminarProducto(${producto.id})
+">
 Eliminar
 </button>
+
 
 <hr>
 
@@ -548,7 +282,7 @@ Eliminar
 
 
 
-listaCarrito.appendChild(div);
+listaCarrito.appendChild(item);
 
 
 
@@ -556,9 +290,14 @@ listaCarrito.appendChild(div);
 
 
 
-contador.textContent=cantidadTotal;
+contador.textContent =
+cantidadProductos;
 
-total.textContent=suma.toFixed(2);
+
+
+total.textContent =
+totalCompra.toFixed(2);
+
 
 
 }
@@ -568,19 +307,30 @@ total.textContent=suma.toFixed(2);
 
 
 
+
+// Cambiar cantidad
 
 function cambiarCantidad(id,cantidad){
 
 
 let producto =
-carrito.find(p=>p.id===id);
+carrito.find(item=>item.id===id);
 
 
-producto.cantidad=
+
+if(producto){
+
+
+producto.cantidad =
 Number(cantidad);
 
 
-guardar();
+
+guardarCarrito();
+
+
+}
+
 
 
 }
@@ -591,14 +341,20 @@ guardar();
 
 
 
-function eliminar(id){
+// Eliminar producto
+
+function eliminarProducto(id){
 
 
 carrito =
-carrito.filter(p=>p.id!==id);
+carrito.filter(
+producto=>producto.id!==id
+);
 
 
-guardar();
+
+guardarCarrito();
+
 
 
 }
@@ -609,29 +365,84 @@ guardar();
 
 
 
-// VALIDACION FORMULARIO
+// Notificación
+
+function mostrarNotificacion(texto){
 
 
-document
-.getElementById("formulario")
-.addEventListener(
+
+const aviso =
+document.createElement("div");
+
+
+
+aviso.className =
+"notificacion";
+
+
+
+aviso.textContent =
+texto;
+
+
+
+document.body.appendChild(aviso);
+
+
+
+setTimeout(()=>{
+
+
+aviso.remove();
+
+
+},3000);
+
+
+
+}
+
+
+
+
+
+
+
+// Validación formulario
+
+const formulario =
+document.getElementById("formulario");
+
+
+
+if(formulario){
+
+
+formulario.addEventListener(
 "submit",
 (e)=>{
 
 
-let email =
+const email =
 document.getElementById("email").value;
+
 
 
 if(!email.includes("@")){
 
+
 e.preventDefault();
 
+
 alert(
-"Correo inválido"
+"Por favor ingresa un correo válido"
 );
+
 
 }
 
 
+
 });
+
+}
