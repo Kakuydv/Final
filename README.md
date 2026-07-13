@@ -35,4 +35,4 @@ Clonar el repositorio y abrir index.html en el navegador.
 
 ## Deploy
 
-Publicado mediante Netlify/GitHub Pages.
+Publicado mediante GitHub Pages.
