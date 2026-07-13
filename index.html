@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="E-commerce dinámico con productos, carrito y contacto">
+    <meta name="keywords" content="tienda, productos, compras online, ecommerce">
+    <meta name="author" content="Proyecto Ecommerce">
+
+    <title>Mi Tienda Online</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<header>
+    <h1>Mi Tienda Online</h1>
+
+    <nav>
+        <ul>
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#productos">Productos</a></li>
+            <li><a href="#resenas">Reseñas</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+            <li>
+                🛒 Carrito:
+                <span id="contador">0</span>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+
+<main>
+
+<section id="inicio">
+
+<h2>Bienvenidos</h2>
+
+<p>
+Encuentra los mejores productos en nuestra tienda online.
+</p>
+
+
+<video controls width="400">
+    <source src="assets/video/presentacion.mp4" type="video/mp4">
+    Tu navegador no soporta video.
+</video>
+
+</section>
+
+
+
+<section id="productos">
+
+<h2>Productos</h2>
+
+<div id="lista-productos" class="productos-container">
+
+</div>
+
+</section>
+
+
+
+<section id="carrito">
+
+<h2>Carrito de compras</h2>
+
+<div id="lista-carrito"></div>
+
+<h3>
+Total:
+$<span id="total">0</span>
+</h3>
+
+<button id="comprar">
+Finalizar compra
+</button>
+
+</section>
+
+
+
+<section id="resenas">
+
+<h2>Reseñas</h2>
+
+
+<div class="grid-resenas">
+
+<article>
+<h3>Juan</h3>
+<p>Excelente producto.</p>
+</article>
+
+<article>
+<h3>María</h3>
+<p>Muy buena atención.</p>
+</article>
+
+<article>
+<h3>Carlos</h3>
+<p>Volvería a comprar.</p>
+</article>
+
+</div>
+
+</section>
+
+
+
+
+<section id="contacto">
+
+<h2>Contacto</h2>
+
+
+<form action="https://formspree.io/f/TU_ID" method="POST" id="formulario">
+
+<input 
+type="text" 
+name="nombre"
+id="nombre"
+placeholder="Nombre"
+required>
+
+
+<input 
+type="email"
+name="email"
+id="email"
+placeholder="Correo electrónico"
+required>
+
+
+<textarea
+name="mensaje"
+id="mensaje"
+placeholder="Mensaje"
+required></textarea>
+
+
+<button type="submit">
+Enviar
+</button>
+
+</form>
+
+<p id="mensaje-form"></p>
+
+
+</section>
+
+
+
+</main>
+
+
+
+<footer>
+
+<p>
+© 2026 Mi Tienda Online
+</p>
+
+</footer>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
